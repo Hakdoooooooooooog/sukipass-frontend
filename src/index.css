@@ -1,117 +1,119 @@
-@import 'tailwindcss';
+@import url("https://fonts.googleapis.com/css2?family=Anton&family=Bricolage+Grotesque:wght@700&family=Hanken+Grotesk:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  --background: 35 46% 93%;
+  --foreground: 24 20% 12%;
+  --card: 45 100% 99%;
+  --card-foreground: 24 20% 12%;
+  --popover: 45 100% 99%;
+  --popover-foreground: 24 20% 12%;
+  --primary: 11 54% 51%;
+  --primary-foreground: 45 100% 99%;
+  --secondary: 35 38% 87%;
+  --secondary-foreground: 24 20% 12%;
+  --muted: 35 38% 87%;
+  --muted-foreground: 29 12% 43%;
+  --accent: 11 54% 51%;
+  --accent-foreground: 45 100% 99%;
+  --destructive: 0 55% 45%;
+  --destructive-foreground: 45 100% 99%;
+  --border: 35 36% 85%;
+  --input: 35 36% 85%;
+  --ring: 11 54% 51%;
+  --chart-1: 11 54% 51%;
+  --chart-2: 149 22% 24%;
+  --chart-3: 38 65% 57%;
+  --chart-4: 29 12% 43%;
+  --chart-5: 35 38% 87%;
+  --radius: 0.875rem;
+  --sidebar: 35 46% 93%;
+  --sidebar-foreground: 24 20% 12%;
+  --sidebar-primary: 11 54% 51%;
+  --sidebar-primary-foreground: 45 100% 99%;
+  --sidebar-accent: 35 38% 87%;
+  --sidebar-accent-foreground: 24 20% 12%;
+  --sidebar-border: 35 36% 85%;
+  --sidebar-ring: 11 54% 51%;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+  --sans: "Hanken Grotesk", system-ui, sans-serif;
+  --heading: "Bricolage Grotesque", "Hanken Grotesk", system-ui, sans-serif;
+  --mono: "Space Mono", ui-monospace, SFMono-Regular, Consolas, monospace;
+  --poster: "Anton", Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
+  font: 18px/1.45 var(--sans);
+  color: #241d18;
+  background: #f5efe6;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
-}
-
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
+* {
   box-sizing: border-box;
 }
 
+html {
+  background: #f5efe6;
+  scrollbar-color: rgba(122, 108, 95, 0.42) transparent;
+  scrollbar-width: thin;
+}
+
 body {
+  min-width: 320px;
+  min-height: 100svh;
   margin: 0;
+  background: #f5efe6;
+  overflow-x: hidden;
 }
 
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
+body.customer-modal-open {
+  overflow: hidden;
 }
 
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
 
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(122, 108, 95, 0.34);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(122, 108, 95, 0.52);
+}
+
+button,
+a {
+  font: inherit;
+}
+
+#root {
+  min-height: 100svh;
+}
+
+@keyframes skeleton-shimmer {
+  100% {
+    transform: translateX(100%);
   }
 }
 
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-
-  @media (max-width: 1024px) {
-    font-size: 20px;
+@layer base {
+  * {
+    @apply border-border;
   }
-}
 
-p {
-  margin: 0;
-}
-
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
-}
-
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+  body {
+    @apply bg-background text-foreground;
+  }
 }
