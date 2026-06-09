@@ -10,7 +10,7 @@ export default defineConfig({
       target: 'src/api/generated/sukipass.ts',
       schemas: 'src/api/generated/model',
       client: 'react-query',
-      prettier: true,
+      formatter: 'prettier',
       override: {
         fetch: {
           includeHttpResponseReturnType: false,

@@ -12,7 +12,7 @@ React 19 + Vite + Tailwind UI for SukiPass — a digital loyalty platform for Ph
 
 ## Prerequisites
 
-- Node 20+
+- Node 22+
 - The **backend running** (`sukipass-backend`) with its Postgres up — required to generate the API client and to fetch live data.
 
 ## Getting started
