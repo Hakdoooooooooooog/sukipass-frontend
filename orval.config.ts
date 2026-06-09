@@ -10,9 +10,11 @@ export default defineConfig({
       target: 'src/api/generated/sukipass.ts',
       schemas: 'src/api/generated/model',
       client: 'react-query',
-      httpClient: 'fetch',
       prettier: true,
       override: {
+        fetch: {
+          includeHttpResponseReturnType: false,
+        },
         mutator: {
           path: 'src/lib/apiClient.ts',
           name: 'customInstance',

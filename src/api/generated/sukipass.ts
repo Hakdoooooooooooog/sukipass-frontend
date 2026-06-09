@@ -29,18 +29,6 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 
 
-export type getHealthResponse200 = {
-  data: HealthResponse
-  status: 200
-}
-
-export type getHealthResponseSuccess = (getHealthResponse200) & {
-  headers: Headers;
-};
-;
-
-export type getHealthResponse = (getHealthResponseSuccess)
-
 export const getGetHealthUrl = () => {
 
 
@@ -52,9 +40,9 @@ export const getGetHealthUrl = () => {
 /**
  * @summary Service health check
  */
-export const getHealth = async ( options?: RequestInit): Promise<getHealthResponse> => {
+export const getHealth = async ( options?: RequestInit): Promise<HealthResponse> => {
 
-  return customInstance<getHealthResponse>(getGetHealthUrl(),
+  return customInstance<HealthResponse>(getGetHealthUrl(),
   {
     ...options,
     method: 'GET'
