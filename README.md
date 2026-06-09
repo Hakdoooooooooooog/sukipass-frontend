@@ -1,73 +1,73 @@
-# React + TypeScript + Vite
+# SukiPass Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React 19 + Vite + Tailwind UI for SukiPass — a digital loyalty platform for Philippine MSMEs.
 
-Currently, two official plugins are available:
+## Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **React 19 + Vite 8 + Tailwind 4**
+- **TanStack Query** for server state
+- **react-router** v7 for routing
+- **Orval** — generates typed TanStack Query hooks from the backend's OpenAPI spec
+- **ESLint + Prettier**, **Husky + lint-staged + commitlint**
 
-## React Compiler
+## Prerequisites
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Node 20+
+- The **backend running** (`sukipass-backend`) with its Postgres up — required to generate the API client and to fetch live data.
 
-## Expanding the ESLint configuration
+## Getting started
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+```bash
+npm install
+cp .env.example .env          # sets VITE_API_BASE_URL=http://localhost:3000
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# With the backend running (see sukipass-backend README):
+npm run api:generate          # generate the typed client from the live OpenAPI spec
+npm run dev                   # http://localhost:5173
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+The Home page calls the backend's `GET /api/v1/health` (via the generated `useGetHealth` hook) and shows its status — if it reads **ok / connected**, the full Zod → OpenAPI → Orval → TanStack Query pipeline is working.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## The typed API client (Orval)
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+`orval.config.ts` reads the backend spec from `http://localhost:3000/openapi.json` and generates:
+
+- `src/api/generated/sukipass.ts` — TanStack Query hooks (e.g. `useGetHealth`)
+- `src/api/generated/model/` — TypeScript models
+
+All requests go through the fetch mutator in `src/lib/apiClient.ts`, which prepends `VITE_API_BASE_URL` (so the generated `/api/v1/...` paths resolve to the backend).
+
+**Regenerate the client whenever the backend's request/response schemas change:**
+
+```bash
+# backend must be running
+npm run api:generate
 ```
+
+The generated client is committed so the app builds without the backend running.
+
+## Project structure
+
+```
+src/
+  app/         App.tsx — providers (QueryClientProvider) + RouterProvider
+  routes/      route components + router table
+  lib/         apiClient (mutator), queryClient
+  config/      env.ts (Zod-validated import.meta.env)
+  api/generated/  Orval output (committed)
+  features/    feature modules (added as the product grows)
+```
+
+## Scripts
+
+| Script                            | Purpose                                               |
+| --------------------------------- | ----------------------------------------------------- |
+| `npm run dev`                     | Vite dev server                                       |
+| `npm run build`                   | Typecheck + production build                          |
+| `npm run api:generate`            | Regenerate the Orval client (backend must be running) |
+| `npm run lint` / `lint:fix`       | ESLint                                                |
+| `npm run format` / `format:check` | Prettier                                              |
+
+## Commits
+
+Conventional Commits enforced by commitlint. Pre-commit runs lint-staged (ESLint + Prettier on staged files).
