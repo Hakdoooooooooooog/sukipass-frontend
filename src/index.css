@@ -1,13 +1,119 @@
-@import 'tailwindcss';
+@import url("https://fonts.googleapis.com/css2?family=Anton&family=Bricolage+Grotesque:wght@700&family=Hanken+Grotesk:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
-  color-scheme: light dark;
+  --background: 35 46% 93%;
+  --foreground: 24 20% 12%;
+  --card: 45 100% 99%;
+  --card-foreground: 24 20% 12%;
+  --popover: 45 100% 99%;
+  --popover-foreground: 24 20% 12%;
+  --primary: 11 54% 51%;
+  --primary-foreground: 45 100% 99%;
+  --secondary: 35 38% 87%;
+  --secondary-foreground: 24 20% 12%;
+  --muted: 35 38% 87%;
+  --muted-foreground: 29 12% 43%;
+  --accent: 11 54% 51%;
+  --accent-foreground: 45 100% 99%;
+  --destructive: 0 55% 45%;
+  --destructive-foreground: 45 100% 99%;
+  --border: 35 36% 85%;
+  --input: 35 36% 85%;
+  --ring: 11 54% 51%;
+  --chart-1: 11 54% 51%;
+  --chart-2: 149 22% 24%;
+  --chart-3: 38 65% 57%;
+  --chart-4: 29 12% 43%;
+  --chart-5: 35 38% 87%;
+  --radius: 0.875rem;
+  --sidebar: 35 46% 93%;
+  --sidebar-foreground: 24 20% 12%;
+  --sidebar-primary: 11 54% 51%;
+  --sidebar-primary-foreground: 45 100% 99%;
+  --sidebar-accent: 35 38% 87%;
+  --sidebar-accent-foreground: 24 20% 12%;
+  --sidebar-border: 35 36% 85%;
+  --sidebar-ring: 11 54% 51%;
+
+  --sans: "Hanken Grotesk", system-ui, sans-serif;
+  --heading: "Bricolage Grotesque", "Hanken Grotesk", system-ui, sans-serif;
+  --mono: "Space Mono", ui-monospace, SFMono-Regular, Consolas, monospace;
+  --poster: "Anton", Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+
+  font: 18px/1.45 var(--sans);
+  color: #241d18;
+  background: #f5efe6;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: #f5efe6;
+  scrollbar-color: rgba(122, 108, 95, 0.42) transparent;
+  scrollbar-width: thin;
+}
+
 body {
+  min-width: 320px;
+  min-height: 100svh;
   margin: 0;
+  background: #f5efe6;
+  overflow-x: hidden;
+}
+
+body.customer-modal-open {
+  overflow: hidden;
+}
+
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(122, 108, 95, 0.34);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(122, 108, 95, 0.52);
+}
+
+button,
+a {
+  font: inherit;
+}
+
+#root {
+  min-height: 100svh;
+}
+
+@keyframes skeleton-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
 }
