@@ -23,6 +23,7 @@ import {
 import { Input } from '@/components/ui/input'
 import mascotLanding from './assets/mascot/mascot-landing.png'
 import mascotWelcome from './assets/mascot/mascot-welcome.png'
+import { BusinessOwnerDashboardPage } from '@/pages/business/BusinessOwnerDashboardPage'
 import { CampaignPassModal, CampaignPassPage } from '@/pages/customer/CampaignPassPage'
 import { ActivityPage } from '@/pages/customer/ActivityPage'
 import { ReceiptModal, ReceiptPage } from '@/pages/customer/ReceiptPage'
@@ -270,6 +271,7 @@ function App() {
         <Route path="/customer/rewards" element={<RewardsPage />} />
         <Route path="/customer/activity" element={<ActivityPage />} />
         <Route path="/customer/activity/:activityId" element={<ReceiptPage />} />
+        <Route path="/business/:businessName" element={<BusinessOwnerDashboardPage />} />
       </Routes>
 
       {backgroundLocation && (
