@@ -23,9 +23,21 @@ import {
 import { Input } from '@/components/ui/input'
 import mascotLanding from './assets/mascot/mascot-landing.png'
 import mascotWelcome from './assets/mascot/mascot-welcome.png'
+import { BusinessCampaignsPage } from '@/pages/business/BusinessCampaignsPage'
+import { BusinessCustomersPage } from '@/pages/business/BusinessCustomersPage'
 import { BusinessOwnerDashboardPage } from '@/pages/business/BusinessOwnerDashboardPage'
+import { BusinessSettingsPage } from '@/pages/business/BusinessSettingsPage'
 import { CampaignPassModal, CampaignPassPage } from '@/pages/customer/CampaignPassPage'
+import { CashierAccountPage } from '@/pages/cashier/CashierAccountPage'
+import { CashierCampaignsPage } from '@/pages/cashier/CashierCampaignsPage'
+import { CashierCustomerDetailPage } from '@/pages/cashier/CashierCustomerDetailPage'
+import { CashierCustomerSharePage } from '@/pages/cashier/CashierCustomerSharePage'
+import { CashierCustomersPage } from '@/pages/cashier/CashierCustomersPage'
+import { CashierHomePage } from '@/pages/cashier/CashierHomePage'
+import { CashierNewCustomerPage } from '@/pages/cashier/CashierNewCustomerPage'
 import { ActivityPage } from '@/pages/customer/ActivityPage'
+import { ClaimCustomerPage } from '@/pages/customer/ClaimCustomerPage'
+import { ClaimCustomerSetupPage } from '@/pages/customer/ClaimCustomerSetupPage'
 import { ReceiptModal, ReceiptPage } from '@/pages/customer/ReceiptPage'
 import { RewardsPage } from '@/pages/customer/RewardsPage'
 import type { ModalLocationState } from '@/pages/customer/types'
@@ -271,7 +283,19 @@ function App() {
         <Route path="/customer/rewards" element={<RewardsPage />} />
         <Route path="/customer/activity" element={<ActivityPage />} />
         <Route path="/customer/activity/:activityId" element={<ReceiptPage />} />
+        <Route path="/claim/:token" element={<ClaimCustomerPage />} />
+        <Route path="/claim/:token/setup" element={<ClaimCustomerSetupPage />} />
+        <Route path="/cashier" element={<CashierHomePage />} />
+        <Route path="/cashier/customers" element={<CashierCustomersPage />} />
+        <Route path="/cashier/customers/new" element={<CashierNewCustomerPage />} />
+        <Route path="/cashier/customers/:customerId/share" element={<CashierCustomerSharePage />} />
+        <Route path="/cashier/customers/:customerId" element={<CashierCustomerDetailPage />} />
+        <Route path="/cashier/campaigns" element={<CashierCampaignsPage />} />
+        <Route path="/cashier/account" element={<CashierAccountPage />} />
         <Route path="/business/:businessName" element={<BusinessOwnerDashboardPage />} />
+        <Route path="/business/:businessName/campaigns" element={<BusinessCampaignsPage />} />
+        <Route path="/business/:businessName/customers" element={<BusinessCustomersPage />} />
+        <Route path="/business/:businessName/settings" element={<BusinessSettingsPage />} />
       </Routes>
 
       {backgroundLocation && (

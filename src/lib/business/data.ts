@@ -32,6 +32,71 @@ export type OwnerCampaignPerformance = {
   tone: 'terra' | 'forest' | 'gold'
 }
 
+export type BusinessCampaignStatus = 'active' | 'paused' | 'draft'
+
+export type BusinessCampaignSummary = {
+  id: string
+  title: string
+  description: string
+  reward: string
+  goal: number
+  tone: 'terra' | 'forest' | 'gold'
+  status: BusinessCampaignStatus
+  enrolled: number
+  readyToClaim: number
+  totalStamps: number
+  updatedAt: string
+}
+
+export type BusinessCustomerStatus = 'claimed' | 'temporary'
+
+export type BusinessCustomerSummary = {
+  id: string
+  name: string
+  code: string
+  status: BusinessCustomerStatus
+  email?: string
+  phone?: string
+  claimToken: string
+  totalStamps: number
+  activeCards: number
+  readyRewards: number
+  lastActivityAt: string
+  campaigns: Array<{
+    id: string
+    title: string
+    reward: string
+    stamps: number
+    goal: number
+    tone: 'terra' | 'forest' | 'gold'
+  }>
+  recentActivity: OwnerActivity[]
+}
+
+export type BusinessStaffRole = 'owner' | 'cashier'
+export type BusinessStaffStatus = 'active' | 'invited' | 'disabled'
+
+export type BusinessStaffAccount = {
+  id: string
+  name: string
+  contact: string
+  role: BusinessStaffRole
+  status: BusinessStaffStatus
+  branch: string
+  lastActive: string
+}
+
+export type BusinessSettings = {
+  profile: {
+    name: string
+    branch: string
+    address: string
+    phone: string
+    email: string
+    displayName: string
+  }
+}
+
 const pesoCompact = new Intl.NumberFormat('en-PH', {
   currency: 'PHP',
   maximumFractionDigits: 0,
@@ -46,6 +111,47 @@ export const businessProfile = {
   branch: cashierStore.branch,
   plan: 'Owner workspace',
 }
+
+export const businessSettings: BusinessSettings = {
+  profile: {
+    name: cashierStore.name,
+    branch: cashierStore.branch,
+    address: '123 Mabini St, San Juan City',
+    phone: '+63 917 123 4567',
+    email: 'owner@sukicafe.test',
+    displayName: cashierStore.name,
+  },
+}
+
+export const businessStaffAccounts: BusinessStaffAccount[] = [
+  {
+    id: 'staff-tala',
+    name: 'Tala Reyes',
+    contact: 'owner@sukicafe.test',
+    role: 'owner',
+    status: 'active',
+    branch: cashierStore.branch,
+    lastActive: '2026-06-11T04:10:00.000Z',
+  },
+  {
+    id: 'staff-mika',
+    name: 'Mika Santos',
+    contact: '+63 917 230 4100',
+    role: 'cashier',
+    status: 'active',
+    branch: cashierStore.branch,
+    lastActive: '2026-06-10T08:30:00.000Z',
+  },
+  {
+    id: 'staff-nico',
+    name: 'Nico Cruz',
+    contact: 'nico@sukicafe.test',
+    role: 'cashier',
+    status: 'invited',
+    branch: cashierStore.branch,
+    lastActive: '2026-06-08T02:20:00.000Z',
+  },
+]
 
 const claimedProfiles = cashierCustomers.filter((customer) => customer.status === 'claimed').length
 export const ownerDailyPerformance: OwnerChartBar[] = [
@@ -122,6 +228,75 @@ export const ownerCampaignPerformance: OwnerCampaignPerformance[] = cashierCampa
     tone: campaign.accent,
   }
 })
+
+export const businessCampaigns: BusinessCampaignSummary[] = cashierCampaigns.map((campaign, index) => {
+  const matchingProgress = cashierCustomers.flatMap((customer) =>
+    customer.activeCampaigns.filter((progress) => progress.campaignId === campaign.id && progress.stamps > 0),
+  )
+
+  return {
+    id: campaign.id,
+    title: campaign.title,
+    description: campaign.description,
+    reward: campaign.reward,
+    goal: campaign.goal,
+    tone: campaign.accent,
+    status: campaign.active ? 'active' : 'paused',
+    enrolled: matchingProgress.length,
+    readyToClaim: matchingProgress.filter((progress) => progress.stamps >= campaign.goal).length,
+    totalStamps: matchingProgress.reduce((sum, progress) => sum + progress.stamps, 0),
+    updatedAt: `2026-06-${String(9 - index).padStart(2, '0')}T04:30:00.000Z`,
+  }
+})
+
+export const businessCustomers: BusinessCustomerSummary[] = cashierCustomers.map((customer) => {
+  const campaigns = customer.activeCampaigns
+    .map((progress) => {
+      const campaign = cashierCampaigns.find((item) => item.id === progress.campaignId)
+      if (!campaign) return null
+      return {
+        id: campaign.id,
+        title: campaign.title,
+        reward: campaign.reward,
+        stamps: progress.stamps,
+        goal: campaign.goal,
+        tone: campaign.accent,
+      }
+    })
+    .filter((campaign): campaign is NonNullable<typeof campaign> => Boolean(campaign))
+
+  return {
+    id: customer.id,
+    name: customer.fullName || customer.nickname,
+    code: customer.code,
+    status: customer.status,
+    email: customer.email,
+    phone: customer.phone,
+    claimToken: customer.claimToken,
+    totalStamps: customer.totalStamps,
+    activeCards: campaigns.filter((campaign) => campaign.stamps > 0).length,
+    readyRewards: campaigns.filter((campaign) => campaign.stamps >= campaign.goal).length,
+    lastActivityAt: customer.recentActivity[0]?.at ?? customer.joinedAt,
+    campaigns,
+    recentActivity: customer.recentActivity.map((activity) => {
+      const campaign = cashierCampaigns.find((item) => item.id === activity.campaignId)
+      return {
+        id: activity.id,
+        customer: customer.nickname,
+        action: activity.type === 'join' ? 'Card created' : `Added ${activity.stamps ?? 1} stamp${activity.stamps === 1 ? '' : 's'}`,
+        detail: campaign?.title ?? 'SukiPass card',
+        at: activity.at,
+      }
+    }),
+  }
+})
+
+export const businessCustomerTotals = {
+  total: businessCustomers.length,
+  claimed: businessCustomers.filter((customer) => customer.status === 'claimed').length,
+  temporary: businessCustomers.filter((customer) => customer.status === 'temporary').length,
+  ready: businessCustomers.filter((customer) => customer.readyRewards > 0).length,
+}
 
 export const ownerActivity: OwnerActivity[] = cashierCustomers.flatMap((customer) =>
   customer.recentActivity.map((activity) => {

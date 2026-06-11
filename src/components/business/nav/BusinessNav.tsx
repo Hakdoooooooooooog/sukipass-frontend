@@ -1,4 +1,4 @@
-import { BarChart3, LogOut, Megaphone, Settings, Store, UsersRound } from 'lucide-react'
+import { BarChart3, LogOut, Megaphone, Settings, UsersRound } from 'lucide-react'
 import { Link, useLocation, useParams } from 'react-router-dom'
 import { cn } from '@/lib/utils'
 
@@ -6,7 +6,6 @@ const tabs = [
   { label: 'Dashboard', segment: '', Icon: BarChart3 },
   { label: 'Campaigns', segment: 'campaigns', Icon: Megaphone },
   { label: 'Customers', segment: 'customers', Icon: UsersRound },
-  { label: 'Activity', segment: 'activity', Icon: Store },
   { label: 'Settings', segment: 'settings', Icon: Settings },
 ]
 
